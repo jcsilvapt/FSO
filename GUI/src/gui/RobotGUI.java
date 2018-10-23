@@ -23,8 +23,6 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 import comunicar.Comunicar;
-import gestor.Gestor;
-import myrobot.myRobot;
 
 public class RobotGUI extends Thread {
 
@@ -49,15 +47,11 @@ public class RobotGUI extends Thread {
 	private boolean robotOn = false;
 	private boolean wandering; // vaguear
 	private boolean avoid; // evitar
-	private Gestor manager; // gestor
 
 	public static final byte ID = 2;
 
 	private Comunicar inbox;
 	private Comunicar gestorBox = new Comunicar("gestor");
-
-	// private RobotLegoEV3 robot;
-	private myRobot robot;
 
 	/**
 	 * Launch the application.
@@ -171,7 +165,7 @@ public class RobotGUI extends Thread {
 	}
 
 	public void disconnectRobot() {
-		robot.CloseEV3();
+		//robot.CloseEV3();
 		btnConectar.setText("Ligar");
 		lblConectado.setBackground(Color.RED);
 	}
@@ -342,7 +336,7 @@ public class RobotGUI extends Thread {
 		btnAvancar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				gestorBox.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.AVANCAR, distance }, "");
-				manager.le();
+				
 				// gestorBox.enviarMsg(new byte[] {ID,Comunicar.AVANCAR,
 				// Byte.parseByte(txtDistance.getText())});
 			}
@@ -369,7 +363,7 @@ public class RobotGUI extends Thread {
 		btnRecuar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				gestorBox.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.RECUAR, distance }, "");
-				manager.le();
+				//manager.le();
 				// gestorBox.enviarMsg(new byte[] {ID,Comunicar.RECUAR,
 				// Byte.parseByte(txtDistance.getText())});
 			}
@@ -381,7 +375,7 @@ public class RobotGUI extends Thread {
 		btnEsquerda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				gestorBox.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.ESQ, radius, angle }, "");
-				manager.le();
+				//manager.le();
 			}
 		});
 		btnEsquerda.setFont(new Font("Tahoma", Font.PLAIN, 10));
@@ -395,7 +389,7 @@ public class RobotGUI extends Thread {
 				// Byte.parseByte(txtRadius.getText()),
 				// Byte.parseByte(txtAngle.getText())});
 				gestorBox.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.DRT, radius, angle }, "");
-				manager.le();
+				//manager.le();
 			}
 		});
 		btnDireita.setFont(new Font("Tahoma", Font.PLAIN, 10));
@@ -472,11 +466,11 @@ public class RobotGUI extends Thread {
 				if (chckbxGestor.isSelected()) {
 					chckbxEvitar.setEnabled(true);
 					chckbxVaguear.setEnabled(true);
-					manager = new Gestor();
+					/// HERERERERERERERE manager = new Gestor();
 				} else {
 					chckbxEvitar.setEnabled(false);
 					chckbxVaguear.setEnabled(false);
-					manager = null;
+					//manager = null;
 				}
 
 			}

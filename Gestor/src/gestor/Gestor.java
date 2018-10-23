@@ -1,6 +1,9 @@
 package gestor;
 import java.util.Arrays;
 
+import comunicar.Comunicar;
+import myrobot.myRobot;
+
 public class Gestor {
 	
 	public static final byte ID = 1;
