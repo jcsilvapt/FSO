@@ -21,7 +21,7 @@ public class Comunicar implements iMensagem {
 
 
 	public Comunicar(String nome) {
-		caixaMsg = new File(/*"..\\coms\\" +*/ nome + ".dat");
+		caixaMsg = new File("..\\coms\\" + nome + ".dat");
 		try {
 			canal = new RandomAccessFile(caixaMsg, "rw").getChannel();
 		} catch (FileNotFoundException e) {
@@ -61,7 +61,7 @@ public class Comunicar implements iMensagem {
 			}
 		} catch (IOException e) {}
 		finally {
-			if (lock == null) { 
+			if (lock != null) { 
 				try {
 					lock.release();
 				} catch (IOException e) {
@@ -110,7 +110,7 @@ public class Comunicar implements iMensagem {
 			}
 		} catch (IOException e) {}
 		finally {
-			if (lock == null) { 
+			if (lock != null) { 
 				try {
 					lock.release();
 				} catch (IOException e) {
@@ -146,6 +146,5 @@ public class Comunicar implements iMensagem {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 }
