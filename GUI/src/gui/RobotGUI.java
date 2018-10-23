@@ -9,6 +9,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -113,6 +114,56 @@ public class RobotGUI extends Thread {
 		}
 	}
 
+	private void BuildProcessGestor(){
+		
+		String[] arg = new String[]{"Java", "-jar", "../Gestor/Gestor.jar"};
+		
+		ProcessBuilder pbGestor = new ProcessBuilder(java.util.Arrays.asList(arg));
+		pbGestor.inheritIO();
+		pbGestor.redirectErrorStream(true);
+		
+		try {
+			pbGestor.start();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}
+	
+private void BuildProcessEvitar(){
+		
+		String[] arg = new String[]{"Java", "-jar", "../Evitar/Evitar.jar"};
+		
+		ProcessBuilder pbEvitar = new ProcessBuilder(java.util.Arrays.asList(arg));
+		pbEvitar.inheritIO();
+		pbEvitar.redirectErrorStream(true);
+		
+		try {
+			pbEvitar.start();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}
+
+private void BuildProcessVaguear(){
+	
+	String[] arg = new String[]{"Java", "-jar", "../Vaguear/Vaguear.jar"};
+	
+	ProcessBuilder pbVaguear = new ProcessBuilder(java.util.Arrays.asList(arg));
+	pbVaguear.inheritIO();
+	pbVaguear.redirectErrorStream(true);
+	
+	try {
+		pbVaguear.start();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+
+}
 	/**
 	 * Função que regista o texto no logger caso este esteja activo
 	 * 
@@ -466,7 +517,7 @@ public class RobotGUI extends Thread {
 				if (chckbxGestor.isSelected()) {
 					chckbxEvitar.setEnabled(true);
 					chckbxVaguear.setEnabled(true);
-					/// HERERERERERERERE manager = new Gestor();
+					BuildProcessGestor();
 				} else {
 					chckbxEvitar.setEnabled(false);
 					chckbxVaguear.setEnabled(false);
