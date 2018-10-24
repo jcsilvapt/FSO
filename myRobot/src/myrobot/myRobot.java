@@ -25,11 +25,11 @@ public class myRobot {
 		System.out.println("A virar " + angulo + " graus num raio de " + raio + ".");
 	}
 	
-	public String Reta(int distancia) {
+	public void Reta(int distancia) {
 		if(distancia >= 0) {
-			return "A andar " + distancia + ".";
+			System.out.println("A andar " + distancia + "cm");
 		}else {
-			return "A recuar " + Math.abs(distancia) + ".";
+			System.out.println("A recuar " + Math.abs(distancia) + "cm");
 		}
 	}
 	
@@ -59,14 +59,13 @@ public class myRobot {
 	
 	public boolean SensorToque(){
 		
-		int bater = (int) Math.random() * 2;
-		System.out.println("bater: " + bater);
+		int bater = (int) Math.round(Math.random());
+		System.out.println("Sensor: " + bater);
 		if (bater == 1){
-			System.out.println("Sensor a 1");
 			return true;
 		}
-		System.out.println("Sensor a 0");
 		return false;
 	}
+
 	
 }

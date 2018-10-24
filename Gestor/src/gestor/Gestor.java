@@ -1,46 +1,47 @@
 package gestor;
+
 import java.util.Arrays;
 
 import comunicar.Comunicar;
 import myrobot.myRobot;
 
 public class Gestor {
-	
+
 	public static final byte ID = 1;
-	
+
 	private Comunicar inbox;
 	private Comunicar gui;
 	private Comunicar evitar;
 	private Comunicar vaguear;
-	
+
 	private myRobot robot;
-	
+
 	private static final int WAIT = 250;
-	
+
 	/**
 	 * Constructor, Inicializa as restantes caixa automaticamente
 	 */
 	public Gestor() {
-		inbox 		= new Comunicar("gestor");
-		gui 		= new Comunicar("gui");
-		evitar 		= new Comunicar("evitar");
-		vaguear 	= new Comunicar("vaguear");
-		this.robot 	= new myRobot();
+		inbox = new Comunicar("gestor");
+		gui = new Comunicar("gui");
+		evitar = new Comunicar("evitar");
+		vaguear = new Comunicar("vaguear");
+		this.robot = new myRobot();
 	}
-	
-	public void le(){
+
+	public void le() {
 		String msg = inbox.receberMsg();
 		descodificar(msg);
 		System.out.println();
 		System.out.println(msg);
 	}
-	
+
 	private void robotConnect(String name) {
 		this.robot = new myRobot();
 		boolean control = true;
-		while(control) {
-			if(robot.OpenEV3(name)) {
-				gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.TRUE}, "");
+		while (control) {
+			if (robot.OpenEV3(name)) {
+				gui.enviarMsg(new byte[] { Comunicar.GESTOR, Comunicar.TRUE }, "");
 				control = false;
 			} else {
 				try {
@@ -51,84 +52,88 @@ public class Gestor {
 			}
 		}
 	}
-	
-	public void descodificar(String msg){
-		
+
+	public void descodificar(String msg) {
+
 		String[] campos = msg.split(";");
-		
-		switch(campos[0]){
-			case "2": case "3":
-				switch(campos[1]){
-					case "1":
-						this.robot.Reta(Integer.parseInt(campos[2]));
-						this.robot.Parar(false);
-						break;
-					case "2":
-						this.robot.Reta(Integer.parseInt(campos[2]));
-						this.robot.Parar(false);
-						break;
-					case "3":
-						this.robot.CurvarEsquerda(Integer.parseInt(campos[2]), Integer.parseInt(campos[3]));
-						this.robot.Parar(false);
-						break;
-					case "4":
-						this.robot.CurvarDireita(Integer.parseInt(campos[2]), Integer.parseInt(campos[3]));
-						this.robot.Parar(false);
-						break;
-					case "5":
-						this.robot.Parar(true);
-						break;
-					case "6":
-						System.out.println(Arrays.toString(campos));
-						this.robot.OpenEV3(campos[campos.length-1]);
-						break;
-					case "7":
-						this.robot.CloseEV3();
-						break;
-					case "8":
-						this.robot.AjustarVME(Integer.parseInt(campos[2]));
-						break;
-					case "9":
-						this.robot.AjustarVMD(Integer.parseInt(campos[2]));
-						break;
-					case "10":
-						this.robot.SetVelocidade(Integer.parseInt(campos[2]));
-						break;
-				}
+
+		switch (campos[0]) {
+		case "2":
+		case "3":
+			switch (campos[1]) {
+			case "1":
+				this.robot.Reta(Integer.parseInt(campos[2]));
+				this.robot.Parar(false);
+				break;
+			case "2":
+				System.out.println(Integer.parseInt(campos[2]));
+				this.robot.Reta(Integer.parseInt(campos[2]));
+				this.robot.Parar(false);
+				break;
+			case "3":
+				this.robot.CurvarEsquerda(Integer.parseInt(campos[2]), Integer.parseInt(campos[3]));
+				this.robot.Parar(false);
 				break;
 			case "4":
-				switch(campos[1]){
-					case "2":
-						this.robot.Reta(Integer.parseInt(campos[2]));
-						this.robot.Parar(false);
-						break;
-					case "3":
-						this.robot.CurvarEsquerda(Integer.parseInt(campos[2]), Integer.parseInt(campos[3]));
-						this.robot.Parar(false);
-						break;
-					case "5":
-						this.robot.Parar(true);
-						break;
-					case "7":
-						envioSensorToque();
-						break;
-				}
+				this.robot.CurvarDireita(Integer.parseInt(campos[2]), Integer.parseInt(campos[3]));
+				this.robot.Parar(false);
+				break;
+			case "5":
+				this.robot.Parar(true);
+				break;
+			case "6":
+				System.out.println(Arrays.toString(campos));
+				this.robot.OpenEV3(campos[campos.length - 1]);
+				break;
+			case "7":
+				this.robot.CloseEV3();
+				break;
+			case "8":
+				this.robot.AjustarVME(Integer.parseInt(campos[2]));
+				break;
+			case "9":
+				this.robot.AjustarVMD(Integer.parseInt(campos[2]));
+				break;
+			case "10":
+				this.robot.SetVelocidade(Integer.parseInt(campos[2]));
+				break;
+			}
+			break;
+		case "4":
+			switch (campos[1]) {
+			case "2":
+				this.robot.Reta(Integer.parseInt(campos[2]));
+				this.robot.Parar(false);
+				break;
+			case "3":
+				System.out.println(Arrays.toString(campos));
+				this.robot.CurvarEsquerda(Integer.parseInt(campos[2]), Integer.parseInt(campos[3]));
+				this.robot.Parar(false);
+				break;
+			case "5":
+				this.robot.Parar(true);
+				break;
+			case "12":
+				System.out.println("sente o toque...");
+				envioSensorToque();
+				break;
+			}
 		}
-		
+
 	}
-	
-	private void envioSensorToque(){
-		if(this.robot.SensorToque()){
-			evitar.enviarMsg(new byte[]{Comunicar.GESTOR,  Comunicar.STOQUE, Comunicar.TRUE}, "");	
+
+	private void envioSensorToque() {
+		if (this.robot.SensorToque()) {
+			evitar.enviarMsg(new byte[] { Comunicar.GESTOR, Comunicar.STOQUE, Comunicar.TRUE }, "");
 		} else {
-			evitar.enviarMsg(new byte[]{Comunicar.GESTOR,  Comunicar.STOQUE, Comunicar.FALSE}, "");
+			evitar.enviarMsg(new byte[] { Comunicar.GESTOR, Comunicar.STOQUE, Comunicar.FALSE }, "");
 		}
 	}
-	
+
 	public void run() {
-		for(;;) {
+		for (;;) {
 			try {
-				String msg = inbox.receberMsg();		
+				String msg = inbox.receberMsg();
 				descodificar(msg);
 				System.out.println(msg);
 				Thread.sleep(250);
@@ -138,10 +143,10 @@ public class Gestor {
 			}
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		Gestor proc = new Gestor();
 		proc.run();
 	}
-	
+
 }

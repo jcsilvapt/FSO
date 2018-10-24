@@ -1,0 +1,80 @@
+package myrobot;
+
+public class myRobot {
+	private final String ROBOTNAME = "EV3";
+	
+	public myRobot() {
+		System.out.println("MyRobot");
+	}
+	
+	public boolean OpenEV3(String name) {
+		if(name.equalsIgnoreCase(ROBOTNAME)) {
+			System.out.println("My Robot # Open **(" + name + ")");
+			return true;
+		}else {
+			System.out.println("Granda falha");
+		}
+		return false;
+	}
+	
+	public void CurvarDireita(int raio, int angulo) {
+		System.out.println("A virar " + angulo + " graus num raio de " + raio + ".");
+	}
+	
+	public void CurvarEsquerda(int raio, int angulo) {
+		System.out.println("A virar " + angulo + " graus num raio de " + raio + ".");
+	}
+	
+	public String Reta(int distancia) {
+		if(distancia >= 0) {
+			return "A andar " + distancia + ".";
+		}else {
+			return "A recuar " + Math.abs(distancia) + ".";
+		}
+	}
+	
+	public void Parar(boolean value) {
+		if(value) {
+			System.out.println("Parar!");
+		}else {
+			System.out.println("Parar assim que conseguir!");
+		}
+	}
+	
+	public String CloseEV3() {
+		return "A desligar...";
+	}
+	
+	public void AjustarVME(int offset){
+		System.out.println("VME ajustado: " + offset);
+	}
+	
+	public void AjustarVMD(int offset){
+		System.out.println("VMD ajustado: " + offset);
+	}
+	
+	public void SetVelocidade(int percentagem){
+		System.out.println("Speed ajustada: " + percentagem);
+	}
+	
+	public boolean SensorToque(){
+		
+		int bater = 1 + (int) Math.random() * 2;
+		System.out.println("bater: " + bater);
+		if (bater == 1){
+			System.out.println("Sensor a 1");
+			return true;
+		}
+		System.out.println("Sensor a 0");
+		return false;
+	}
+	
+	public static void main(String[] args) {
+		myRobot teste = new myRobot();
+		
+		for(int i = 0; i < 100 ; i++) {
+			teste.SensorToque();
+		}
+	}
+	
+}

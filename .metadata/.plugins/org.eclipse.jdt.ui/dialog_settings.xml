@@ -2,13 +2,14 @@
 <section name="Workbench">
 	<section name="FatJarPackageWizard">
 		<item value="S:\JAVA\FSO" key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION"/>
-		<item value="Vaguear - Vaguear" key="FatJarPackageWizardPage.LAUNCH_CONFIGURATION_SELECTION_NAME"/>
-		<item value="Vaguear\Vaguear.jar" key="FatJarPackageWizardPage.DESTINATION_PATH_SELECTION"/>
+		<item value="Gestor - Gestor" key="FatJarPackageWizardPage.LAUNCH_CONFIGURATION_SELECTION_NAME"/>
+		<item value="Gestor\Gestor.jar" key="FatJarPackageWizardPage.DESTINATION_PATH_SELECTION"/>
 		<item value="false" key="FatJarPackageWizardPage.ANTSCRIPT_SAVE"/>
 		<item value="3" key="FatJarPackageWizardPage.LIBRARY_HANDLING"/>
 		<list key="FatJarPackageWizardPage.DESTINATION_NAMES_ID">
-			<item value="Vaguear\Vaguear.jar"/>
+			<item value="Gestor\Gestor.jar"/>
 			<item value="Evitar\Evitar.jar"/>
+			<item value="Vaguear\Vaguear.jar"/>
 			<item value="Gestor/Gestor.jar"/>
 		</list>
 		<list key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION_HISTORY">
