@@ -44,4 +44,29 @@ public class myRobot {
 	public String CloseEV3() {
 		return "A desligar...";
 	}
+	
+	public void AjustarVME(int offset){
+		System.out.println("VME ajustado: " + offset);
+	}
+	
+	public void AjustarVMD(int offset){
+		System.out.println("VMD ajustado: " + offset);
+	}
+	
+	public void SetVelocidade(int percentagem){
+		System.out.println("Speed ajustada: " + percentagem);
+	}
+	
+	public boolean SensorToque(){
+		
+		int bater = (int) Math.random() * 2;
+		System.out.println("bater: " + bater);
+		if (bater == 1){
+			System.out.println("Sensor a 1");
+			return true;
+		}
+		System.out.println("Sensor a 0");
+		return false;
+	}
+	
 }

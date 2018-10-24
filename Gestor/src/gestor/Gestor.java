@@ -85,12 +85,31 @@ public class Gestor {
 					case "7":
 						this.robot.CloseEV3();
 						break;
-					case 
+					case "8":
+						this.robot.AjustarVME(Integer.parseInt(campos[2]));
+						break;
+					case "9":
+						this.robot.AjustarVMD(Integer.parseInt(campos[2]));
+						break;
+					case "10":
+						this.robot.SetVelocidade(Integer.parseInt(campos[2]));
+						break;
 				}
 				break;
 			case "4":
 				switch(campos[1]){
-					case "8":
+					case "2":
+						this.robot.Reta(Integer.parseInt(campos[2]));
+						this.robot.Parar(false);
+						break;
+					case "3":
+						this.robot.CurvarEsquerda(Integer.parseInt(campos[2]), Integer.parseInt(campos[3]));
+						this.robot.Parar(false);
+						break;
+					case "5":
+						this.robot.Parar(true);
+						break;
+					case "7":
 						envioSensorToque();
 						break;
 				}
@@ -99,7 +118,11 @@ public class Gestor {
 	}
 	
 	private void envioSensorToque(){
-		
+		if(this.robot.SensorToque()){
+			evitar.enviarMsg(new byte[]{Comunicar.GESTOR,  Comunicar.STOQUE, Comunicar.TRUE}, "");	
+		} else {
+			evitar.enviarMsg(new byte[]{Comunicar.GESTOR,  Comunicar.STOQUE, Comunicar.FALSE}, "");
+		}
 	}
 	
 	public void run() {

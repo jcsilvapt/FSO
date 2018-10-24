@@ -22,11 +22,11 @@ public interface iMensagem {
 	public static byte SPD		= 10;
 	
 	/* */
-	public static byte STOQUE	= 1;
-	public static byte RTOQUE	= 2;
+	public static byte STOQUE	= 6;
+	public static byte RTOQUE	= 7;
 	
-	public static byte TRUE 	= 1;
-	public static byte FALSE 	= 0;
+	public static byte TRUE 	= 2;
+	public static byte FALSE 	= 1;
 	//public static byte RESPONDERTOQUE = 9;
 	
 	

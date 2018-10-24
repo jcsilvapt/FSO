@@ -12,30 +12,44 @@ public class Evitar {
 		this.inbox = new Comunicar("evitar");
 	}
 	
-	private void descodificar(String[] msg){
-		switch(msg[2]){
-			case "0":
-				break;
+	private void descodificar(String msg){
+		
+		String[] campos = msg.split(";");
+		
+		switch(campos[2]){
 			case "1":
-				gestor.enviarMsg(new byte[]{4, 5}, "");
+				break;
+			case "2":
+				gestor.enviarMsg(new byte[]{Comunicar.EVITAR, Comunicar.PARAR}, "");
 				try {
 					Thread.sleep(250);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				gestor.enviarMsg(new byte[]{4, 2, 15}, "");
+				gestor.enviarMsg(new byte[]{Comunicar.EVITAR, Comunicar.RECUAR, 15}, "");
+				try {
+					Thread.sleep(250);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				gestor.enviarMsg(new byte[]{Comunicar.EVITAR, Comunicar.ESQ, 0, 90}, "");
 			}
 		}
 	
 	private void run() {
-		for(;;) {
+		for(;;) {			
 			try {
+				String msg = inbox.receberMsg();
+				descodificar(msg);
+				System.out.println(msg);
 				Thread.sleep(250);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			gestor.enviarMsg(new byte[]{Comunicar.EVITAR, Comunicar.RTOQUE}, "");
 		}
 	}
 	
