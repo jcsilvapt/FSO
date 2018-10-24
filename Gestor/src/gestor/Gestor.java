@@ -85,14 +85,20 @@ public class Gestor {
 					case "7":
 						this.robot.CloseEV3();
 						break;
+					case 
 				}
 				break;
 			case "4":
 				switch(campos[1]){
 					case "8":
+						envioSensorToque();
 						break;
 				}
 		}
+		
+	}
+	
+	private void envioSensorToque(){
 		
 	}
 	
