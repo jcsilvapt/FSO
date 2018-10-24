@@ -1,4 +1,5 @@
 package gui;
+
 import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.EventQueue;
@@ -48,6 +49,8 @@ public class RobotGUI extends Thread {
 	private boolean robotOn = false;
 	private boolean wandering; // vaguear
 	private boolean avoid; // evitar
+
+	private Process pGestor, pVaguear, pEvitar;
 
 	public static final byte ID = 2;
 
@@ -114,56 +117,56 @@ public class RobotGUI extends Thread {
 		}
 	}
 
-	private void BuildProcessGestor(){
-		
-		String[] arg = new String[]{"Java", "-jar", "../Gestor/Gestor.jar"};
-		
+	private void BuildProcessGestor() {
+
+		String[] arg = new String[] { "Java", "-jar", "../Gestor/Gestor.jar" };
+
 		ProcessBuilder pbGestor = new ProcessBuilder(java.util.Arrays.asList(arg));
 		pbGestor.inheritIO();
 		pbGestor.redirectErrorStream(true);
-		
 		try {
-			pbGestor.start();
+			pGestor = pbGestor.start();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
+
 	}
-	
-private void BuildProcessEvitar(){
-		
-		String[] arg = new String[]{"Java", "-jar", "../Evitar/Evitar.jar"};
-		
+
+	private void BuildProcessEvitar() {
+
+		String[] arg = new String[] { "Java", "-jar", "../Evitar/Evitar.jar" };
+
 		ProcessBuilder pbEvitar = new ProcessBuilder(java.util.Arrays.asList(arg));
 		pbEvitar.inheritIO();
 		pbEvitar.redirectErrorStream(true);
-		
+
 		try {
-			pbEvitar.start();
+			pEvitar = pbEvitar.start();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
+
 	}
 
-private void BuildProcessVaguear(){
-	
-	String[] arg = new String[]{"Java", "-jar", "../Vaguear/Vaguear.jar"};
-	
-	ProcessBuilder pbVaguear = new ProcessBuilder(java.util.Arrays.asList(arg));
-	pbVaguear.inheritIO();
-	pbVaguear.redirectErrorStream(true);
-	
-	try {
-		pbVaguear.start();
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+	private void BuildProcessVaguear() {
+
+		String[] arg = new String[] { "Java", "-jar", "../Vaguear/Vaguear.jar" };
+
+		ProcessBuilder pbVaguear = new ProcessBuilder(java.util.Arrays.asList(arg));
+		pbVaguear.inheritIO();
+		pbVaguear.redirectErrorStream(true);
+
+		try {
+			pVaguear = pbVaguear.start();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
-}
 	/**
 	 * Função que regista o texto no logger caso este esteja activo
 	 * 
@@ -216,7 +219,7 @@ private void BuildProcessVaguear(){
 	}
 
 	public void disconnectRobot() {
-		//robot.CloseEV3();
+		// robot.CloseEV3();
 		btnConectar.setText("Ligar");
 		lblConectado.setBackground(Color.RED);
 	}
@@ -273,6 +276,8 @@ private void BuildProcessVaguear(){
 		txtNomeRobot.setColumns(10);
 
 		btnConectar = new JButton("Conectar");
+		btnConectar.setToolTipText("Ligar Gestor");
+		btnConectar.setEnabled(false);
 		btnConectar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -387,7 +392,7 @@ private void BuildProcessVaguear(){
 		btnAvancar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				gestorBox.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.AVANCAR, distance }, "");
-				
+
 				// gestorBox.enviarMsg(new byte[] {ID,Comunicar.AVANCAR,
 				// Byte.parseByte(txtDistance.getText())});
 			}
@@ -414,7 +419,7 @@ private void BuildProcessVaguear(){
 		btnRecuar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				gestorBox.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.RECUAR, distance }, "");
-				//manager.le();
+				// manager.le();
 				// gestorBox.enviarMsg(new byte[] {ID,Comunicar.RECUAR,
 				// Byte.parseByte(txtDistance.getText())});
 			}
@@ -426,7 +431,7 @@ private void BuildProcessVaguear(){
 		btnEsquerda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				gestorBox.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.ESQ, radius, angle }, "");
-				//manager.le();
+				// manager.le();
 			}
 		});
 		btnEsquerda.setFont(new Font("Tahoma", Font.PLAIN, 10));
@@ -440,7 +445,7 @@ private void BuildProcessVaguear(){
 				// Byte.parseByte(txtRadius.getText()),
 				// Byte.parseByte(txtAngle.getText())});
 				gestorBox.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.DRT, radius, angle }, "");
-				//manager.le();
+				// manager.le();
 			}
 		});
 		btnDireita.setFont(new Font("Tahoma", Font.PLAIN, 10));
@@ -495,6 +500,16 @@ private void BuildProcessVaguear(){
 		panelRobot.add(lblOffsetDrt);
 
 		chckbxVaguear = new JCheckBox("Vaguear");
+		chckbxVaguear.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (!chckbxVaguear.isSelected()) {
+					pVaguear.destroy();
+				} else {
+					BuildProcessVaguear();
+				}
+			}
+		});
 		chckbxVaguear.setEnabled(false);
 		chckbxVaguear.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		chckbxVaguear.setForeground(Color.WHITE);
@@ -503,6 +518,16 @@ private void BuildProcessVaguear(){
 		panelRobot.add(chckbxVaguear);
 
 		chckbxEvitar = new JCheckBox("Evitar");
+		chckbxEvitar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (!chckbxEvitar.isSelected()) {
+					pEvitar.destroy();
+				} else {
+					BuildProcessEvitar();
+				}
+			}
+		});
 		chckbxEvitar.setEnabled(false);
 		chckbxEvitar.setForeground(Color.WHITE);
 		chckbxEvitar.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -517,11 +542,21 @@ private void BuildProcessVaguear(){
 				if (chckbxGestor.isSelected()) {
 					chckbxEvitar.setEnabled(true);
 					chckbxVaguear.setEnabled(true);
+					btnConectar.setEnabled(true);
+					btnConectar.setToolTipText(null);
 					BuildProcessGestor();
 				} else {
 					chckbxEvitar.setEnabled(false);
 					chckbxVaguear.setEnabled(false);
-					//manager = null;
+					btnConectar.setEnabled(false);
+					btnConectar.setToolTipText("Ligar Gestor");
+					if (pEvitar != null) {
+						pEvitar.destroy();
+					}
+					if (pVaguear != null) {
+						pVaguear.destroy();
+					}
+					pGestor.destroy();
 				}
 
 			}
@@ -581,5 +616,5 @@ private void BuildProcessVaguear(){
 		txtrLogging.setLineWrap(true);
 		spLogging.setViewportView(txtrLogging);
 	}
-	
+
 }
