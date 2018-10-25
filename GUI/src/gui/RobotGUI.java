@@ -55,7 +55,7 @@ public class RobotGUI extends Thread {
 	public static final byte ID = 2;
 
 	private Comunicar inbox;
-	private Comunicar gestorBox = new Comunicar("gestor");
+	private Comunicar gestor = new Comunicar("gestor");
 
 	/**
 	 * Launch the application.
@@ -81,7 +81,6 @@ public class RobotGUI extends Thread {
 
 	private void descodificar(String msg) {
 		String[] campos = msg.split(";");
-		System.out.println(campos[2]);
 		switch (campos[1]) {
 		case "6":
 			switch (campos[2]) {
@@ -94,6 +93,7 @@ public class RobotGUI extends Thread {
 			default:
 				break;
 			}
+			break;
 		case "7":
 			robotConnected(false);
 			break;
@@ -220,21 +220,21 @@ public class RobotGUI extends Thread {
 	 * 
 	 * @param name
 	 */
-	public void connectRobot(String name) {
+	public void robotStatus() {
 		if (name.equals("") || name == null || name.length() == 0) {
 			logger("Nome do Robot vazio...");
 		} else {
 			if (!this.robotOn)
-				gestorBox.enviarMsg(new byte[] { ID, Comunicar.OPEN }, this.name);
-			else
-				gestorBox.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.CLOSE }, "");
-
+				gestor.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.OPEN }, this.name);
+			else{
+				gestor.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.CLOSE }, "");
+			}
 		}
 
 	}
 
 	private void robotConnected(boolean value) {
-		if (!value) {
+		if (value) {
 			btnConectar.setText("Desligar");
 			lblConectado.setBackground(Color.GREEN);
 			this.robotOn = true;
@@ -302,18 +302,14 @@ public class RobotGUI extends Thread {
 		panelConeccao.add(txtNomeRobot);
 		txtNomeRobot.setColumns(10);
 
-		btnConectar = new JButton("Conectar");
+		btnConectar = new JButton("Ligar");
 		btnConectar.setToolTipText("Ligar Gestor");
 		btnConectar.setEnabled(false);
 		btnConectar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				name = txtNomeRobot.getText();
-				if (btnConectar.getText().equals("Conectar")) {
-					connectRobot(name);
-				} else {
-					disconnectRobot();
-				}
+				robotStatus();
 			}
 		});
 		btnConectar.setFont(new Font("Tahoma", Font.PLAIN, 10));
@@ -418,7 +414,7 @@ public class RobotGUI extends Thread {
 		JButton btnAvancar = new JButton("Avan\u00E7ar");
 		btnAvancar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				gestorBox.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.AVANCAR, distance }, "");
+				gestor.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.AVANCAR, distance }, "");
 
 				// gestorBox.enviarMsg(new byte[] {ID,Comunicar.AVANCAR,
 				// Byte.parseByte(txtDistance.getText())});
@@ -445,7 +441,7 @@ public class RobotGUI extends Thread {
 		btnRecuar.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnRecuar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				gestorBox.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.RECUAR, distance }, "");
+				gestor.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.RECUAR, distance }, "");
 				// manager.le();
 				// gestorBox.enviarMsg(new byte[] {ID,Comunicar.RECUAR,
 				// Byte.parseByte(txtDistance.getText())});
@@ -457,7 +453,7 @@ public class RobotGUI extends Thread {
 		JButton btnEsquerda = new JButton("Esquerda");
 		btnEsquerda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				gestorBox.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.ESQ, radius, angle }, "");
+				gestor.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.ESQ, radius, angle }, "");
 				// manager.le();
 			}
 		});
@@ -471,7 +467,7 @@ public class RobotGUI extends Thread {
 				// gestorBox.enviarMsg(new byte[] {ID,Comunicar.DRT,
 				// Byte.parseByte(txtRadius.getText()),
 				// Byte.parseByte(txtAngle.getText())});
-				gestorBox.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.DRT, radius, angle }, "");
+				gestor.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.DRT, radius, angle }, "");
 				// manager.le();
 			}
 		});

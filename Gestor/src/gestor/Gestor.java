@@ -91,6 +91,7 @@ public class Gestor {
 				}
 				break;
 			case "7":
+				gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.CLOSE}, "");
 				this.robot.CloseEV3();
 				break;
 			case "8":

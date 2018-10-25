@@ -42,6 +42,7 @@ public class myRobot {
 	}
 	
 	public String CloseEV3() {
+		System.out.println("Desligar");
 		return "A desligar...";
 	}
 	
