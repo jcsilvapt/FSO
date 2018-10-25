@@ -61,16 +61,43 @@ public class RobotGUI extends Thread {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					RobotGUI window = new RobotGUI();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		RobotGUI window = new RobotGUI();
+		window.frame.setVisible(true);
+		window.start();
+	}
+
+	public void run() {
+		for (;;) {
+			try {
+				String msg = inbox.receberMsg();
+				descodificar(msg);
+				System.out.println(msg);
+				Thread.sleep(250);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-		});
+		}
+	}
+
+	private void descodificar(String msg) {
+		String[] campos = msg.split(";");
+		System.out.println(campos[2]);
+		switch (campos[1]) {
+		case "6":
+			switch (campos[2]) {
+			case "1":
+				robotConnected(false);
+				break;
+			case "2":
+				robotConnected(true);
+				break;
+			default:
+				break;
+			}
+		case "7":
+			robotConnected(false);
+			break;
+		}
 	}
 
 	/**
@@ -207,7 +234,7 @@ public class RobotGUI extends Thread {
 	}
 
 	private void robotConnected(boolean value) {
-		if (value) {
+		if (!value) {
 			btnConectar.setText("Desligar");
 			lblConectado.setBackground(Color.GREEN);
 			this.robotOn = true;

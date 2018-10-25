@@ -18,8 +18,15 @@ public class Evitar {
 
 		switch (campos[2]) {
 		case "1":
+			gestor.enviarMsg(new byte[] { Comunicar.EVITAR, Comunicar.RSUSP }, "");
 			break;
 		case "2":
+			try {
+				gestor.enviarMsg(new byte[] { Comunicar.EVITAR, Comunicar.SSUSP }, "");
+				Thread.sleep(250);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			gestor.enviarMsg(new byte[] { Comunicar.EVITAR, Comunicar.PARAR }, "");
 			gestor.enviarMsg(new byte[] { Comunicar.EVITAR, Comunicar.RECUAR, -15 }, "");
 			gestor.enviarMsg(new byte[] { Comunicar.EVITAR, Comunicar.ESQ, 0, 90 }, "");
@@ -29,11 +36,11 @@ public class Evitar {
 
 	private void run() {
 		for (;;) {
-			gestor.enviarMsg(new byte[] { Comunicar.EVITAR, Comunicar.RTOQUE }, "");
 			try {
+				gestor.enviarMsg(new byte[] { Comunicar.EVITAR, Comunicar.RTOQUE }, "");
 				String msg = inbox.receberMsg();
 				descodificar(msg);
-				System.out.println(msg);
+				System.out.println("msg do Evitar : " + msg);
 				Thread.sleep(250);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block

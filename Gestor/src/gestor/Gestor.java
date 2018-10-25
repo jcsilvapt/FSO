@@ -80,10 +80,15 @@ public class Gestor {
 				break;
 			case "5":
 				this.robot.Parar(true);
+				gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.OPEN, 1}, "");
 				break;
 			case "6":
 				System.out.println(Arrays.toString(campos));
-				this.robot.OpenEV3(campos[campos.length - 1]);
+				if(this.robot.OpenEV3(campos[campos.length - 1])){
+					gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.OPEN, 2}, "");
+				} else {
+					gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.OPEN, 1}, "");
+				}
 				break;
 			case "7":
 				this.robot.CloseEV3();
@@ -116,6 +121,14 @@ public class Gestor {
 			case "12":
 				System.out.println("sente o toque...");
 				envioSensorToque();
+				break;
+			case "13":
+				vaguear.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.SSUSP}, "");
+				gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.SSUSP}, "");
+				break;
+			case "14":
+				vaguear.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.RSUSP}, "");
+				gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.RSUSP}, "");
 				break;
 			}
 		}
