@@ -7,7 +7,6 @@ import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
-import java.util.Arrays;
 
 public class Comunicar implements iMensagem {
 
@@ -21,6 +20,7 @@ public class Comunicar implements iMensagem {
 
 	/* Caixas */
 
+	@SuppressWarnings("resource")
 	public Comunicar(String nome) {
 		caixaMsg = new File("..\\coms\\" + nome + ".dat");
 		try {
@@ -47,7 +47,6 @@ public class Comunicar implements iMensagem {
 	public void descodificar(String msg) {
 		String[] msgAux = msg.split(";");
 
-		System.out.println(Arrays.toString(msgAux));
 		switch (msgAux[0]) {
 		}
 	}
@@ -94,6 +93,7 @@ public class Comunicar implements iMensagem {
 	@Override
 	public String receberMsg() {
 		lock = null;
+		buffer.position(0);
 		try {
 			for (;;) {
 				lock = canal.lock();

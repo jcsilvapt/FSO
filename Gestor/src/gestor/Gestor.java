@@ -29,13 +29,7 @@ public class Gestor {
 		this.robot = new myRobot();
 	}
 
-	public void le() {
-		String msg = inbox.receberMsg();
-		descodificar(msg);
-		System.out.println();
-		System.out.println(msg);
-	}
-
+	@SuppressWarnings("unused")
 	private void robotConnect(String name) {
 		this.robot = new myRobot();
 		boolean control = true;
@@ -62,6 +56,7 @@ public class Gestor {
 		case "3":
 			switch (campos[1]) {
 			case "1":
+				System.out.println("Why");
 				this.robot.Reta(Integer.parseInt(campos[2]));
 				this.robot.Parar(false);
 				break;
@@ -83,7 +78,6 @@ public class Gestor {
 				gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.OPEN, 1}, "");
 				break;
 			case "6":
-				System.out.println(Arrays.toString(campos));
 				if(this.robot.OpenEV3(campos[campos.length - 1])){
 					gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.OPEN, 2}, "");
 				} else {
@@ -110,14 +104,17 @@ public class Gestor {
 			case "2":
 				this.robot.Reta(Integer.parseInt(campos[2]));
 				this.robot.Parar(false);
+				nextAction();
 				break;
 			case "3":
 				System.out.println(Arrays.toString(campos));
 				this.robot.CurvarEsquerda(Integer.parseInt(campos[2]), Integer.parseInt(campos[3]));
 				this.robot.Parar(false);
+				nextAction();
 				break;
 			case "5":
 				this.robot.Parar(true);
+				nextAction();
 				break;
 			case "12":
 				System.out.println("sente o toque...");
@@ -133,7 +130,10 @@ public class Gestor {
 				break;
 			}
 		}
-
+	}
+	
+	private void nextAction() {
+		evitar.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.TRUE}, "");
 	}
 
 	private void envioSensorToque() {
@@ -149,10 +149,9 @@ public class Gestor {
 			try {
 				String msg = inbox.receberMsg();
 				descodificar(msg);
-				System.out.println(msg);
+				System.out.println("Gestor Lê mensagem: " + msg);
 				Thread.sleep(250);
 			} catch (InterruptedException e) {
-				// FIXME Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

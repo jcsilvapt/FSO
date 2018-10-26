@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.Color;
 import java.awt.ComponentOrientation;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,8 +46,6 @@ public class RobotGUI extends Thread {
 	private String name;
 	private byte offSetLeft, offSetRight, angle, distance, radius;
 	private boolean robotOn = false;
-	private boolean wandering; // vaguear
-	private boolean avoid; // evitar
 
 	private Process pGestor, pVaguear, pEvitar;
 
@@ -71,7 +68,7 @@ public class RobotGUI extends Thread {
 			try {
 				String msg = inbox.receberMsg();
 				descodificar(msg);
-				System.out.println(msg);
+				System.out.println("GUI Lê mensagem: " + msg);
 				Thread.sleep(250);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -97,6 +94,11 @@ public class RobotGUI extends Thread {
 		case "7":
 			robotConnected(false);
 			break;
+		case "13":
+			inbox.setSuspend(true);
+			break;
+		case "14":
+			inbox.setSuspend(false);
 		}
 	}
 
@@ -154,7 +156,6 @@ public class RobotGUI extends Thread {
 		try {
 			pGestor = pbGestor.start();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -171,7 +172,6 @@ public class RobotGUI extends Thread {
 		try {
 			pEvitar = pbEvitar.start();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -188,7 +188,6 @@ public class RobotGUI extends Thread {
 		try {
 			pVaguear = pbVaguear.start();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -226,7 +225,7 @@ public class RobotGUI extends Thread {
 		} else {
 			if (!this.robotOn)
 				gestor.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.OPEN }, this.name);
-			else{
+			else {
 				gestor.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.CLOSE }, "");
 			}
 		}
@@ -308,8 +307,10 @@ public class RobotGUI extends Thread {
 		btnConectar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				name = txtNomeRobot.getText();
-				robotStatus();
+				if (btnConectar.isEnabled()) {
+					name = txtNomeRobot.getText();
+					robotStatus();
+				}
 			}
 		});
 		btnConectar.setFont(new Font("Tahoma", Font.PLAIN, 10));
@@ -414,7 +415,9 @@ public class RobotGUI extends Thread {
 		JButton btnAvancar = new JButton("Avan\u00E7ar");
 		btnAvancar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				gestor.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.AVANCAR, distance }, "");
+				if (robotOn) {
+					gestor.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.AVANCAR, (byte) distance }, "");
+				}
 
 				// gestorBox.enviarMsg(new byte[] {ID,Comunicar.AVANCAR,
 				// Byte.parseByte(txtDistance.getText())});
@@ -441,7 +444,9 @@ public class RobotGUI extends Thread {
 		btnRecuar.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnRecuar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				gestor.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.RECUAR, distance }, "");
+				if (robotOn) {
+					gestor.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.RECUAR, distance }, "");
+				}
 				// manager.le();
 				// gestorBox.enviarMsg(new byte[] {ID,Comunicar.RECUAR,
 				// Byte.parseByte(txtDistance.getText())});
@@ -453,8 +458,8 @@ public class RobotGUI extends Thread {
 		JButton btnEsquerda = new JButton("Esquerda");
 		btnEsquerda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				gestor.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.ESQ, radius, angle }, "");
-				// manager.le();
+				if (robotOn)
+					gestor.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.ESQ, radius, angle }, "");
 			}
 		});
 		btnEsquerda.setFont(new Font("Tahoma", Font.PLAIN, 10));
@@ -464,11 +469,8 @@ public class RobotGUI extends Thread {
 		JButton btnDireita = new JButton("Direita");
 		btnDireita.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// gestorBox.enviarMsg(new byte[] {ID,Comunicar.DRT,
-				// Byte.parseByte(txtRadius.getText()),
-				// Byte.parseByte(txtAngle.getText())});
-				gestor.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.DRT, radius, angle }, "");
-				// manager.le();
+				if (robotOn)
+					gestor.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.DRT, radius, angle }, "");
 			}
 		});
 		btnDireita.setFont(new Font("Tahoma", Font.PLAIN, 10));

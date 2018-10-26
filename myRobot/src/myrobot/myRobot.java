@@ -60,7 +60,7 @@ public class myRobot {
 	
 	public boolean SensorToque(){
 		
-		int bater = (int) Math.round(Math.random());
+		int bater = 1;//(int) Math.round(Math.random());
 		System.out.println("Sensor: " + bater);
 		if (bater == 1){
 			return true;
