@@ -15,6 +15,8 @@ public class Gestor {
 	private Comunicar vaguear;
 
 	private myRobot robot;
+	
+	private boolean runner;
 
 	private static final int WAIT = 250;
 
@@ -56,12 +58,10 @@ public class Gestor {
 		case "3":
 			switch (campos[1]) {
 			case "1":
-				System.out.println("Why");
 				this.robot.Reta(Integer.parseInt(campos[2]));
 				this.robot.Parar(false);
 				break;
 			case "2":
-				System.out.println(Integer.parseInt(campos[2]));
 				this.robot.Reta(Integer.parseInt(campos[2]));
 				this.robot.Parar(false);
 				break;
@@ -85,8 +85,9 @@ public class Gestor {
 				}
 				break;
 			case "7":
-				gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.CLOSE}, "");
+				
 				this.robot.CloseEV3();
+				gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.CLOSE}, "");
 				break;
 			case "8":
 				this.robot.AjustarVME(Integer.parseInt(campos[2]));
@@ -107,7 +108,6 @@ public class Gestor {
 				nextAction();
 				break;
 			case "3":
-				System.out.println(Arrays.toString(campos));
 				this.robot.CurvarEsquerda(Integer.parseInt(campos[2]), Integer.parseInt(campos[3]));
 				this.robot.Parar(false);
 				nextAction();
@@ -117,12 +117,12 @@ public class Gestor {
 				nextAction();
 				break;
 			case "12":
-				System.out.println("sente o toque...");
 				envioSensorToque();
 				break;
 			case "13":
 				vaguear.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.SSUSP}, "");
 				gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.SSUSP}, "");
+				nextAction();
 				break;
 			case "14":
 				vaguear.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.RSUSP}, "");
@@ -149,7 +149,6 @@ public class Gestor {
 			try {
 				String msg = inbox.receberMsg();
 				descodificar(msg);
-				System.out.println("Gestor Lê mensagem: " + msg);
 				Thread.sleep(250);
 			} catch (InterruptedException e) {
 				e.printStackTrace();

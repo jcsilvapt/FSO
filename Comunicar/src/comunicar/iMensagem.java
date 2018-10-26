@@ -28,6 +28,8 @@ public interface iMensagem {
 	public static byte SSUSP	= 13;
 	public static byte RSUSP	= 14;
 	
+	public static byte STOP		= 15; // Supostamente para enviar e pedir aos processos para pararem
+	
 	public static byte TRUE 	= 2;
 	public static byte FALSE 	= 1;
 	//public static byte RESPONDERTOQUE = 9;

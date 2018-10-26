@@ -68,7 +68,7 @@ public class RobotGUI extends Thread {
 			try {
 				String msg = inbox.receberMsg();
 				descodificar(msg);
-				System.out.println("GUI Lê mensagem: " + msg);
+				// System.out.println("GUI Lê mensagem: " + msg);
 				Thread.sleep(250);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -575,6 +575,10 @@ public class RobotGUI extends Thread {
 					chckbxVaguear.setEnabled(false);
 					btnConectar.setEnabled(false);
 					btnConectar.setToolTipText("Ligar Gestor");
+					if (robotOn) {
+						gestor.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.CLOSE }, "");
+					}
+					robotConnected(false);
 					if (pEvitar != null) {
 						pEvitar.destroy();
 					}
