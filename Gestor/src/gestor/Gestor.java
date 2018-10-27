@@ -75,7 +75,8 @@ public class Gestor {
 				break;
 			case "5":
 				this.robot.Parar(true);
-				gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.OPEN, 1}, "");
+				if(runner)
+					gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.OPEN, 1}, "");
 				break;
 			case "6":
 				if(this.robot.OpenEV3(campos[campos.length - 1])){
@@ -85,7 +86,6 @@ public class Gestor {
 				}
 				break;
 			case "7":
-				
 				this.robot.CloseEV3();
 				gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.CLOSE}, "");
 				break;
@@ -127,6 +127,7 @@ public class Gestor {
 			case "14":
 				vaguear.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.RSUSP}, "");
 				gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.RSUSP}, "");
+				runner = false;
 				break;
 			}
 		}
@@ -139,6 +140,7 @@ public class Gestor {
 	private void envioSensorToque() {
 		if (this.robot.SensorToque()) {
 			evitar.enviarMsg(new byte[] { Comunicar.GESTOR, Comunicar.STOQUE, Comunicar.TRUE }, "");
+			runner = true;
 		} else {
 			evitar.enviarMsg(new byte[] { Comunicar.GESTOR, Comunicar.STOQUE, Comunicar.FALSE }, "");
 		}

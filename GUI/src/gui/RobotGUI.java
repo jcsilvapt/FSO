@@ -24,6 +24,8 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 import comunicar.Comunicar;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class RobotGUI extends Thread {
 
@@ -266,7 +268,7 @@ public class RobotGUI extends Thread {
 		frame.setTitle("..:FSO-TP1:..");
 		frame.setResizable(false);
 		frame.getContentPane().setBackground(Color.BLACK);
-		frame.setBounds(100, 100, 584, 600);
+		frame.setBounds(100, 100, 573, 588);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setLocationRelativeTo(null);
@@ -354,6 +356,23 @@ public class RobotGUI extends Thread {
 		panelRobot.add(lblRaio);
 
 		txtDistance = new JTextField();
+		txtDistance.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				txtDistance.selectAll();
+			}
+		});
+		txtDistance.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (verificaCampo(txtDistance.getText())) {
+					txtDistance.setBackground(Color.white);
+					distance = Byte.parseByte(txtDistance.getText());
+				} else {
+					txtDistance.setBackground(Color.red);
+				}
+			}
+		});
 		txtDistance.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent event) {
 				if (event.getKeyChar() == KeyEvent.VK_ENTER) {
@@ -373,6 +392,23 @@ public class RobotGUI extends Thread {
 		txtDistance.setColumns(10);
 
 		txtAngle = new JTextField();
+		txtAngle.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				if(verificaCampo(txtAngle.getText())) {
+					txtAngle.setBackground(Color.WHITE);
+					angle = Byte.parseByte(txtRadius.getText());
+				}else {
+					txtRadius.setBackground(Color.RED);
+				}
+			}
+		});
+		txtAngle.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				txtAngle.selectAll();
+			}
+		});
 		txtAngle.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent event) {
@@ -393,16 +429,20 @@ public class RobotGUI extends Thread {
 		txtAngle.setColumns(10);
 
 		txtRadius = new JTextField();
-		txtRadius.addKeyListener(new KeyAdapter() {
+		txtRadius.addMouseListener(new MouseAdapter() {
 			@Override
-			public void keyPressed(KeyEvent event) {
-				if (event.getKeyChar() == KeyEvent.VK_ENTER) {
-					if (verificaCampo(txtRadius.getText())) {
-						txtRadius.setBackground(Color.white);
-						radius = Byte.parseByte(txtRadius.getText());
-					} else {
-						txtRadius.setBackground(Color.red);
-					}
+			public void mouseClicked(MouseEvent e) {
+				txtRadius.selectAll();
+			}
+		});
+		txtRadius.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				if(verificaCampo(txtRadius.getText())) {
+					txtRadius.setBackground(Color.WHITE);
+					radius = Byte.parseByte(txtRadius.getText());
+				}else {
+					txtRadius.setBackground(Color.RED);
 				}
 			}
 		});
@@ -416,7 +456,7 @@ public class RobotGUI extends Thread {
 		btnAvancar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (robotOn) {
-					gestor.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.AVANCAR, (byte) distance }, "");
+					gestor.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.AVANCAR, distance }, "");
 				}
 
 				// gestorBox.enviarMsg(new byte[] {ID,Comunicar.AVANCAR,
@@ -431,10 +471,8 @@ public class RobotGUI extends Thread {
 		btnParar.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnParar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// gestorBox.enviarMsg(new byte[] {Comunicar.GUI,
-				// Comunicar.RECUAR, }, "");
-				// manager.le();
-				// gestorBox.enviarMsg(new byte[] {ID,Comunicar.PARAR, 1});
+				if (robotOn)
+					gestor.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.PARAR }, "");
 			}
 		});
 		btnParar.setBounds(272, 104, 76, 32);
@@ -445,7 +483,7 @@ public class RobotGUI extends Thread {
 		btnRecuar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (robotOn) {
-					gestor.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.RECUAR, distance }, "");
+					gestor.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.RECUAR, (byte) (distance*-1) }, "");
 				}
 				// manager.le();
 				// gestorBox.enviarMsg(new byte[] {ID,Comunicar.RECUAR,
@@ -487,6 +525,18 @@ public class RobotGUI extends Thread {
 		panelRobot.add(lblOffsetEsq);
 
 		txtOffsetLeft = new JTextField();
+		txtOffsetLeft.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				offSetLeft = Byte.parseByte(txtOffsetLeft.getText());
+			}
+		});
+		txtOffsetLeft.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				txtOffsetLeft.selectAll();
+			}
+		});
 		txtOffsetLeft.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent event) {
@@ -502,6 +552,18 @@ public class RobotGUI extends Thread {
 		txtOffsetLeft.setColumns(10);
 
 		txtOffsetRight = new JTextField();
+		txtOffsetRight.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				offSetRight = Byte.parseByte(txtOffsetRight.getText());
+			}
+		});
+		txtOffsetRight.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				txtOffsetRight.selectAll();
+			}
+		});
 		txtOffsetRight.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent event) {
