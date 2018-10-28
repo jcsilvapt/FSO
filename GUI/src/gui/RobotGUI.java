@@ -181,7 +181,7 @@ public class RobotGUI extends Thread {
 
 	private void BuildProcessVaguear() {
 
-		String[] arg = new String[] { "Java", "-jar", "../Vaguear/Vaguear.jar" };
+		String[] arg = new String[] { "Java", "-jar", "-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005" ,"../Vaguear/Vaguear.jar" };
 
 		ProcessBuilder pbVaguear = new ProcessBuilder(java.util.Arrays.asList(arg));
 		pbVaguear.inheritIO();

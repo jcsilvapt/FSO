@@ -1,7 +1,5 @@
 package gestor;
 
-import java.util.Arrays;
-
 import comunicar.Comunicar;
 import myrobot.myRobot;
 
