@@ -20,7 +20,6 @@ public class Comunicar implements iMensagem {
 
 	/* Caixas */
 
-	@SuppressWarnings("resource")
 	public Comunicar(String nome) {
 		caixaMsg = new File("..\\coms\\" + nome + ".dat");
 		try {
@@ -35,20 +34,8 @@ public class Comunicar implements iMensagem {
 			e.printStackTrace();
 		}
 	}
-
-	public boolean isSuspend() {
-		return suspend;
-	}
-
 	public void setSuspend(boolean suspend) {
 		this.suspend = suspend;
-	}
-
-	public void descodificar(String msg) {
-		String[] msgAux = msg.split(";");
-
-		switch (msgAux[0]) {
-		}
 	}
 
 	public void enviarMsg(byte[] msg, String name) {

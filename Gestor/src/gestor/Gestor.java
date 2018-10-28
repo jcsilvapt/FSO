@@ -52,82 +52,87 @@ public class Gestor {
 		String[] campos = msg.split(";");
 
 		switch (campos[0]) {
-		case "2":
-		case "3":
+		case "2": case "3":
 			switch (campos[1]) {
-			case "1":
-				this.robot.Reta(Integer.parseInt(campos[2]));
-				this.robot.Parar(false);
-				break;
-			case "2":
-				this.robot.Reta(Integer.parseInt(campos[2]));
-				this.robot.Parar(false);
-				break;
-			case "3":
-				this.robot.CurvarEsquerda(Integer.parseInt(campos[2]), Integer.parseInt(campos[3]));
-				this.robot.Parar(false);
-				break;
-			case "4":
-				this.robot.CurvarDireita(Integer.parseInt(campos[2]), Integer.parseInt(campos[3]));
-				this.robot.Parar(false);
-				break;
-			case "5":
-				this.robot.Parar(true);
-				if(runner)
-					gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.OPEN, 1}, "");
-				break;
-			case "6":
-				if(this.robot.OpenEV3(campos[campos.length - 1])){
-					gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.OPEN, 2}, "");
-				} else {
-					gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.OPEN, 1}, "");
+				case "1":
+					this.robot.Reta(Integer.parseInt(campos[2]));
+					this.robot.Parar(false);
+					break;
+				case "2":
+					this.robot.Reta(Integer.parseInt(campos[2]));
+					this.robot.Parar(false);
+					break;
+				case "3":
+					this.robot.CurvarEsquerda(Integer.parseInt(campos[2]), Integer.parseInt(campos[3]));
+					this.robot.Parar(false);
+					break;
+				case "4":
+					this.robot.CurvarDireita(Integer.parseInt(campos[2]), Integer.parseInt(campos[3]));
+					this.robot.Parar(false);
+					break;
+				case "5":
+					this.robot.Parar(true);
+					if(runner)
+						gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.OPEN, 1}, "");
+					break;
+				case "6":
+					if(this.robot.OpenEV3(campos[campos.length - 1])){
+						gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.OPEN, 2}, "");
+					} else {
+						gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.OPEN, 1}, "");
+					}
+					break;
+				case "7":
+					gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.CLOSE}, "");
+					this.robot.CloseEV3();
+					
+					break;
+				case "8":
+					this.robot.AjustarVME(Integer.parseInt(campos[2]));
+					break;
+				case "9":
+					this.robot.AjustarVMD(Integer.parseInt(campos[2]));
+					break;
+				case "10":
+					this.robot.SetVelocidade(Integer.parseInt(campos[2]));
+					break;
 				}
 				break;
-			case "7":
-				this.robot.CloseEV3();
-				gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.CLOSE}, "");
-				break;
-			case "8":
-				this.robot.AjustarVME(Integer.parseInt(campos[2]));
-				break;
-			case "9":
-				this.robot.AjustarVMD(Integer.parseInt(campos[2]));
-				break;
-			case "10":
-				this.robot.SetVelocidade(Integer.parseInt(campos[2]));
-				break;
-			}
-			break;
 		case "4":
 			switch (campos[1]) {
-			case "2":
-				this.robot.Reta(Integer.parseInt(campos[2]));
-				this.robot.Parar(false);
-				nextAction();
-				break;
-			case "3":
-				this.robot.CurvarEsquerda(Integer.parseInt(campos[2]), Integer.parseInt(campos[3]));
-				this.robot.Parar(false);
-				nextAction();
-				break;
-			case "5":
-				this.robot.Parar(true);
-				nextAction();
-				break;
-			case "12":
-				envioSensorToque();
-				break;
-			case "13":
-				vaguear.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.SSUSP}, "");
-				gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.SSUSP}, "");
-				nextAction();
-				break;
-			case "14":
-				vaguear.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.RSUSP}, "");
-				gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.RSUSP}, "");
-				runner = false;
-				break;
+				case "2":
+					this.robot.Reta(Integer.parseInt(campos[2]));
+					this.robot.Parar(false);
+					nextAction();
+					break;
+				case "3":
+					this.robot.CurvarEsquerda(Integer.parseInt(campos[2]), Integer.parseInt(campos[3]));
+					this.robot.Parar(false);
+					nextAction();
+					break;
+				case "5":
+					this.robot.Parar(true);
+					nextAction();
+					break;
+				case "12":
+					envioSensorToque();
+					break;
+				case "13":
+					vaguear.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.SSUSP}, "");
+					gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.SSUSP}, "");
+					nextAction();
+					break;
+				case "14":
+					vaguear.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.RSUSP}, "");
+					gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.RSUSP}, "");
+					runner = false;
+					break;
+				default:
+					break;
 			}
+			break;
+		default:
+			break;
 		}
 	}
 	

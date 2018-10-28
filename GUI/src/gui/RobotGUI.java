@@ -609,6 +609,7 @@ public class RobotGUI extends Thread {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (!chckbxEvitar.isSelected()) {
+					gestor.enviarMsg(new byte[] {Comunicar.EVITAR, Comunicar.RSUSP}, "");
 					pEvitar.destroy();
 				} else {
 					BuildProcessEvitar();
@@ -634,11 +635,19 @@ public class RobotGUI extends Thread {
 					BuildProcessGestor();
 				} else {
 					chckbxEvitar.setEnabled(false);
+					chckbxEvitar.setSelected(false);
 					chckbxVaguear.setEnabled(false);
+					chckbxVaguear.setSelected(false);
 					btnConectar.setEnabled(false);
 					btnConectar.setToolTipText("Ligar Gestor");
 					if (robotOn) {
-						gestor.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.CLOSE }, "");
+						try {
+							gestor.enviarMsg(new byte[] { Comunicar.GUI, Comunicar.CLOSE }, "");
+							Thread.sleep(100);
+						} catch (InterruptedException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 					}
 					robotConnected(false);
 					if (pEvitar != null) {

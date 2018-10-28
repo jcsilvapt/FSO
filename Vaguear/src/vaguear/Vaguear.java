@@ -10,6 +10,7 @@ public class Vaguear {
 	public Vaguear() {
 		System.out.println("Vaguear - Iniciado");
 		inbox = new Comunicar("vaguear");
+		inbox.enviarMsg(new byte[] {Comunicar.EVITAR, Comunicar.TRUE}, "");
 		gestor = new Comunicar("gestor");
 	}
 
@@ -33,39 +34,41 @@ public class Vaguear {
 		int angle;
 		int radius;
 		switch (accao) {
-		case 1:
-			move = (int) (1 + Math.random()*127);
-			gestor.enviarMsg(new byte[] {Comunicar.VAGUEAR, Comunicar.AVANCAR, (byte) move}, "");
-			break;
-		case 2:
-			move = (int) ((1 + Math.random()*128))*-1;
-			gestor.enviarMsg(new byte[] {Comunicar.VAGUEAR, Comunicar.RECUAR, (byte) move}, "");
-			break;
-		case 3:
-			radius = (int) (1 + Math.random()*127);
-			angle = (int) (1 + Math.random()*127);
-			gestor.enviarMsg(new byte[] {Comunicar.VAGUEAR,  Comunicar.ESQ, (byte) radius, (byte) angle}, "");
-			break;
-		case 4:
-			radius = (int) (1 + Math.random()*127);
-			angle = (int) (1 + Math.random()*127);
-			gestor.enviarMsg(new byte[] {Comunicar.VAGUEAR,  Comunicar.DRT, (byte) radius, (byte) angle}, "");
-			break;
+			case 1:
+				move = (int) (1 + Math.random()*127);
+				gestor.enviarMsg(new byte[] {Comunicar.VAGUEAR, Comunicar.AVANCAR, (byte) move}, "");
+				break;
+			case 2:
+				move = (int) ((1 + Math.random()*128))*-1;
+				gestor.enviarMsg(new byte[] {Comunicar.VAGUEAR, Comunicar.RECUAR, (byte) move}, "");
+				break;
+			case 3:
+				radius = (int) (1 + Math.random()*127);
+				angle = (int) (1 + Math.random()*127);
+				gestor.enviarMsg(new byte[] {Comunicar.VAGUEAR,  Comunicar.ESQ, (byte) radius, (byte) angle}, "");
+				break;
+			case 4:
+				radius = (int) (1 + Math.random()*127);
+				angle = (int) (1 + Math.random()*127);
+				gestor.enviarMsg(new byte[] {Comunicar.VAGUEAR,  Comunicar.DRT, (byte) radius, (byte) angle}, "");
+				break;
+			default:
+				System.out.println("Case Default");
+				break;
 		}
 	}
 	
 	public void run() {
 		for (;;) {
-			randomMove();
 			try {
 				String msg = inbox.receberMsg();
-				System.out.println(msg);
 				descodificar(msg);
+				randomMove();
 				Thread.sleep(250);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-
+			inbox.enviarMsg(new byte[] {Comunicar.EVITAR, Comunicar.TRUE}, "");
 		}
 	}
 
