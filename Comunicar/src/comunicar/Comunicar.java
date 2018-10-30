@@ -49,7 +49,7 @@ public class Comunicar implements iMensagem {
 					}
 					lock.release();
 					try {
-						Thread.sleep(10);
+						Thread.sleep(1);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -89,7 +89,7 @@ public class Comunicar implements iMensagem {
 				}
 				lock.release();
 				try {
-					Thread.sleep(10);
+					Thread.sleep(1);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -148,11 +148,11 @@ public class Comunicar implements iMensagem {
 		
 		if(raio){
 			aux = (int) (2.*Math.PI * valor);
-			aux = aux * angulo / 127;
+			aux = aux * angulo / 254;
 		}
 		
 		delay = aux * convMs / convCm;
-		
+		System.out.println("esperar: " + delay +"ms");
 		return delay;
 	}
 	

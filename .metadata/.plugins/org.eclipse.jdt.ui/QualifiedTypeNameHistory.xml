@@ -5,4 +5,5 @@
 <fullyQualifiedTypeName name="java.lang.Thread"/>
 <fullyQualifiedTypeName name="java.lang.Math"/>
 <fullyQualifiedTypeName name="comunicar.Comunicar"/>
+<fullyQualifiedTypeName name="RobotLegoEV3"/>
 </qualifiedTypeNameHistroy>
