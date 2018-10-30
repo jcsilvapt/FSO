@@ -37,6 +37,7 @@ public class Evitar {
 
 	private void avoid() throws InterruptedException {
 		boolean count = true;
+		int delay = 0;
 		if (phase == 0) {
 			suspend = true;
 			gestor.enviarMsg(new byte[] { Comunicar.EVITAR, Comunicar.SSUSP }, "");
@@ -45,8 +46,11 @@ public class Evitar {
 			gestor.enviarMsg(new byte[] { Comunicar.EVITAR, Comunicar.PARAR }, "");
 		} else if (phase == 2) {
 			gestor.enviarMsg(new byte[] { Comunicar.EVITAR, Comunicar.RECUAR, -15 }, "");
+			delay = Comunicar.delay(15, false, 0);
+			Thread.sleep(delay);
 		} else if (phase == 3) {
 			gestor.enviarMsg(new byte[] { Comunicar.EVITAR, Comunicar.ESQ, 0, 90 }, "");
+			Thread.sleep(1000);
 		} else if(phase == 4) {
 			gestor.enviarMsg(new byte[] { Comunicar.EVITAR, Comunicar.RSUSP }, "");
 			suspend = false;

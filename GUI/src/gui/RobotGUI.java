@@ -529,6 +529,7 @@ public class RobotGUI extends Thread {
 			@Override
 			public void focusLost(FocusEvent e) {
 				offSetLeft = Byte.parseByte(txtOffsetLeft.getText());
+				gestor.enviarMsg(new byte[]{Comunicar.GUI, Comunicar.VME, (byte) offSetLeft}, "");
 			}
 		});
 		txtOffsetLeft.addMouseListener(new MouseAdapter() {
@@ -542,6 +543,7 @@ public class RobotGUI extends Thread {
 			public void keyPressed(KeyEvent event) {
 				if (event.getKeyChar() == KeyEvent.VK_ENTER) {
 					offSetLeft = Byte.parseByte(txtOffsetLeft.getText());
+					gestor.enviarMsg(new byte[]{Comunicar.GUI, Comunicar.VME, (byte) offSetLeft}, "");
 				}
 			}
 		});
@@ -556,6 +558,7 @@ public class RobotGUI extends Thread {
 			@Override
 			public void focusLost(FocusEvent e) {
 				offSetRight = Byte.parseByte(txtOffsetRight.getText());
+				gestor.enviarMsg(new byte[]{Comunicar.GUI, Comunicar.VMD, (byte) offSetRight}, "");
 			}
 		});
 		txtOffsetRight.addMouseListener(new MouseAdapter() {
@@ -569,6 +572,7 @@ public class RobotGUI extends Thread {
 			public void keyPressed(KeyEvent event) {
 				if (event.getKeyChar() == KeyEvent.VK_ENTER) {
 					offSetRight = Byte.parseByte(txtOffsetRight.getText());
+					gestor.enviarMsg(new byte[]{Comunicar.GUI, Comunicar.VMD, (byte) offSetRight}, "");
 				}
 			}
 		});

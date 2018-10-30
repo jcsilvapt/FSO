@@ -28,34 +28,39 @@ public class Vaguear {
 		
 	}
 	
-	private void randomMove() {
+	private void randomMove() throws InterruptedException {
 		int accao = (int) (1 + Math.random()*4);
 		int move;
 		int angle;
 		int radius;
+		int delay = 0;
 		switch (accao) {
 			case 1:
 				move = (int) (1 + Math.random()*127);
 				gestor.enviarMsg(new byte[] {Comunicar.VAGUEAR, Comunicar.AVANCAR, (byte) move}, "");
+				delay = Comunicar.delay(move, false, 0);
 				break;
 			case 2:
 				move = (int) ((1 + Math.random()*128))*-1;
 				gestor.enviarMsg(new byte[] {Comunicar.VAGUEAR, Comunicar.RECUAR, (byte) move}, "");
+				delay = Comunicar.delay(move * -1, false, 0);
 				break;
 			case 3:
 				radius = (int) (1 + Math.random()*127);
 				angle = (int) (1 + Math.random()*127);
 				gestor.enviarMsg(new byte[] {Comunicar.VAGUEAR,  Comunicar.ESQ, (byte) radius, (byte) angle}, "");
+				delay = Comunicar.delay(radius, true, angle);
 				break;
 			case 4:
 				radius = (int) (1 + Math.random()*127);
 				angle = (int) (1 + Math.random()*127);
 				gestor.enviarMsg(new byte[] {Comunicar.VAGUEAR,  Comunicar.DRT, (byte) radius, (byte) angle}, "");
+				delay = Comunicar.delay(radius, true, angle);
 				break;
 			default:
-				System.out.println("Case Default");
 				break;
 		}
+		Thread.sleep(delay);
 	}
 	
 	public void run() {

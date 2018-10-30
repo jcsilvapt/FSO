@@ -138,4 +138,22 @@ public class Comunicar implements iMensagem {
 			e.printStackTrace();
 		}
 	}
+	
+	public static int delay(int valor, boolean raio, int angulo){
+		
+		int convCm = 100;
+		int convMs = 5000;
+		int delay = 0;
+		int aux = valor;
+		
+		if(raio){
+			aux = (int) (2.*Math.PI * valor);
+			aux = aux * angulo / 127;
+		}
+		
+		delay = aux * convMs / convCm;
+		
+		return delay;
+	}
+	
 }
