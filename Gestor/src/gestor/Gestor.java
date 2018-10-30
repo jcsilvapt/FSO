@@ -85,15 +85,17 @@ public class Gestor {
 				case "7":
 					gui.enviarMsg(new byte[] {Comunicar.GESTOR, Comunicar.CLOSE}, "");
 					this.robot.CloseEV3();
-					
 					break;
 				case "8":
+					gui.enviarMsg(new byte[] {Comunicar.GESTOR,  Comunicar.VME}, ""); //Mudanças, not sure if right
 					this.robot.AjustarVME(Integer.parseInt(campos[2]));
 					break;
 				case "9":
+					gui.enviarMsg(new byte[] {Comunicar.GESTOR,  Comunicar.VMD}, ""); //Mudanças, not sure if right
 					this.robot.AjustarVMD(Integer.parseInt(campos[2]));
 					break;
 				case "10":
+					gui.enviarMsg(new byte[] {Comunicar.GESTOR,  Comunicar.SPD}, ""); //Mudanças, not sure if right
 					this.robot.SetVelocidade(Integer.parseInt(campos[2]));
 					break;
 				}
